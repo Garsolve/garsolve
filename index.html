@@ -1,3085 +1,401 @@
 <!DOCTYPE html>
+
 <html lang="en">
-
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Garsolve | Under Construction</title>
 
-    <!-- =====================================================
-         DOCUMENT
-    ====================================================== -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <meta charset="UTF-8">
+  <style>
+    /* ==========================
+   Animated Background
+========================== */
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+#waveCanvas{
+    position:fixed;
+    inset:0;
+    width:100%;
+    height:100%;
+    z-index:-10;
+    background:
+        radial-gradient(
+            circle at center,
+            #02111f 0%,
+            #01060d 100%
+        );
+}
 
-    <meta
-        name="description"
-        content="Garsolve provides technology solutions, Power Platform development, business automation, data integration, and custom business applications."
-    >
+.logo-watermark{
+    position:fixed;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    width:min(45vw,700px);
+    opacity:.045;
+    z-index:-9;
+    pointer-events:none;
+    filter:drop-shadow(
+        0 0 30px rgba(0,214,214,.15)
+    );
+}
 
-    <meta
-        name="theme-color"
-        content="#050e19"
-    >
+/* Make content float above animation */
 
-    <meta
-        name="robots"
-        content="index, follow"
-    >
+header,
+section,
+footer,
+.hero,
+.navbar{
+    position:relative;
+    z-index:2;
+}
 
-    <link
-        rel="canonical"
-        href="https://garsolve.com/"
-    >
-
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "ProfessionalService",
-        "name": "Garsolve LLC",
-        "url": "https://garsolve.com/",
-        "email": "GilbertGarcia@garsolve.com",
-        "telephone": "+1-480-886-1568",
-        "areaServed": "Arizona"
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
     }
-    </script>
 
-    <meta
-        property="og:title"
-        content="Garsolve | Technology Solutions"
-    >
+    body{
+      font-family:'Poppins',sans-serif;
+      background:#020617;
+      color:white;
+      overflow:hidden;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      position:relative;
+    }
 
-    <meta
-        property="og:description"
-        content="Business applications, automation, systems integration, and technology consulting built around the way your business works."
-    >
+    .background-glow{
+      position:absolute;
+      width:1200px;
+      height:1200px;
+      background:radial-gradient(circle, rgba(0,214,214,0.18) 0%, transparent 70%);
+      top:-35%;
+      right:-15%;
+      z-index:0;
+    }
 
-    <meta
-        property="og:type"
-        content="website"
-    >
+    .wave{
+      position:absolute;
+      bottom:-100px;
+      width:120%;
+      height:400px;
+      background:
+        radial-gradient(circle at center,
+        rgba(0,214,214,0.12),
+        transparent 70%);
+      transform:rotate(-6deg);
+      z-index:0;
+    }
 
-    <meta
-        property="og:url"
-        content="https://garsolve.com/"
-    >
+    .container{
+      position:relative;
+      z-index:2;
+      width:90%;
+      max-width:1200px;
+      padding:60px;
+      border-radius:32px;
+      background:rgba(8,15,30,0.72);
+      border:1px solid rgba(255,255,255,0.08);
+      backdrop-filter:blur(18px);
+      box-shadow:0 25px 80px rgba(0,0,0,0.45);
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:60px;
+      align-items:center;
+    }
 
-    <meta
-        property="og:image"
-        content="https://garsolve.com/assets/images/garsolve-social.png"
-    >
+    .logo{
+      width:auto;
+      margin-bottom:32px;
+    }
 
-    <meta
-        name="twitter:card"
-        content="summary"
-    >
+    h1{
+      font-size:72px;
+      line-height:1;
+      margin-bottom:24px;
+      font-weight:800;
+    }
 
-    <meta
-        name="twitter:title"
-        content="Garsolve | Technology Solutions"
-    >
+    .highlight{
+      color:#00D6D6;
+    }
 
-    <meta
-        name="twitter:description"
-        content="Business applications, automation, systems integration, and technology consulting."
-    >
+    p{
+      font-size:20px;
+      line-height:1.7;
+      color:#cbd5e1;
+      margin-bottom:36px;
+      max-width:620px;
+    }
 
-    <meta
-        name="author"
-        content="Garsolve LLC"
-    >
+    .status{
+      display:inline-flex;
+      align-items:center;
+      gap:12px;
+      padding:12px 22px;
+      border-radius:999px;
+      background:rgba(0,214,214,0.12);
+      color:#00D6D6;
+      font-weight:600;
+      margin-bottom:28px;
+      border:1px solid rgba(0,214,214,0.2);
+    }
 
-    <meta
-        name="robots"
-        content="index, follow"
-    >
+    .dot{
+      width:10px;
+      height:10px;
+      border-radius:50%;
+      background:#00D6D6;
+      animation:pulse 1.5s infinite;
+    }
 
-    <title>
-        Garsolve | Technology Solutions
-    </title>
+    @keyframes pulse{
+      0%{opacity:0.3;transform:scale(1);}
+      50%{opacity:1;transform:scale(1.3);}
+      100%{opacity:0.3;transform:scale(1);}
+    }
 
+    .contact-card{
+      background:linear-gradient(145deg,#08111f,#0b1729);
+      border-radius:28px;
+      padding:40px;
+      border:1px solid rgba(255,255,255,0.08);
+      position:relative;
+      overflow:hidden;
+    }
 
-    <!-- =====================================================
-         FAVICON
-    ====================================================== -->
+    .contact-card::before{
+      content:'';
+      position:absolute;
+      inset:0;
+      background:
+      radial-gradient(circle at top right,
+      rgba(0,214,214,0.18),
+      transparent 35%);
+      z-index:0;
+    }
 
-    <link
-        rel="icon"
-        type="image/svg+xml"
-        href="assets/logo/garsolve-mark.svg"
-    >
+    .contact-content{
+      position:relative;
+      z-index:1;
+    }
 
+    .contact-title{
+      font-size:32px;
+      margin-bottom:30px;
+      font-weight:700;
+    }
 
-    <!-- =====================================================
-         FONT
-    ====================================================== -->
+    .contact-item{
+      display:flex;
+      align-items:center;
+      gap:18px;
+      margin-bottom:26px;
+    }
 
-    <link
-        rel="preconnect"
-        href="https://fonts.googleapis.com"
-    >
+    .icon{
+      width:56px;
+      height:56px;
+      border-radius:18px;
+      background:linear-gradient(135deg,#00D6D6,#089B9B);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:24px;
+      flex-shrink:0;
+    }
 
-    <link
-        rel="preconnect"
-        href="https://fonts.gstatic.com"
-        crossorigin
-    >
+    .contact-item h3{
+      font-size:15px;
+      color:#94a3b8;
+      margin-bottom:4px;
+      font-weight:500;
+    }
 
-    <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet"
-    >
+    .contact-item p,
+    .contact-item a{
+      font-size:18px;
+      color:white;
+      text-decoration:none;
+      margin:0;
+    }
 
+    .footer-note{
+      margin-top:30px;
+      font-size:14px;
+      color:#94a3b8;
+    }
 
-    <!-- =====================================================
-         CSS
-    ====================================================== -->
+    .otter{
+      position:absolute;
+      right:-40px;
+      bottom:-20px;
+      width:280px;
+      opacity:0.08;
+      z-index:0;
+    }
 
-    <link
-        rel="stylesheet"
-        href="css/variables.css"
-    >
+    @media(max-width:992px){
 
-    <link
-        rel="stylesheet"
-        href="css/reset.css"
-    >
+      body{
+        overflow:auto;
+        padding:40px 0;
+      }
 
-    <link
-        rel="stylesheet"
-        href="css/typography.css"
-    >
+      .container{
+        grid-template-columns:1fr;
+        padding:40px;
+      }
 
-    <link
-        rel="stylesheet"
-        href="css/layout.css"
-    >
+      h1{
+        font-size:52px;
+      }
 
-    <link
-        rel="stylesheet"
-        href="css/components.css"
-    >
+      .otter{
+        display:none;
+      }
 
-    <link
-        rel="stylesheet"
-        href="css/animations.css"
-    >
+    }
 
-    <link
-        rel="stylesheet"
-        href="css/responsive.css"
-    >
+    @media(max-width:600px){
+
+      h1{
+        font-size:42px;
+      }
+
+      p{
+        font-size:18px;
+      }
+
+      .container{
+        padding:28px;
+      }
+
+      .contact-card{
+        padding:28px;
+      }
+
+    }
+
+  </style>
 
 </head>
 
+<canvas id="waveCanvas"></canvas>
+
+<img
+    src="assets/Garsolve Tech Solutions  - White_MatteG.png"
+    class="logo-watermark"
+    alt="Garsolve"
+/>
 
 <body>
 
+  <div class="background-glow"></div>
+  <div class="wave"></div>
 
-    <!-- =====================================================
-         BACKGROUND
-    ====================================================== -->
+  <div class="container">
+    
+<div>
 
-    <div
-        class="site-background"
-        aria-hidden="true"
-    >
+  <div class="status">
+    <div class="dot"></div>
+    Website Currently Under Construction
+  </div>
 
-        <div
-            id="particleField"
-            class="particle-field"
-            aria-hidden="true"
-        ></div>
+  <img
+    src="assets/Garsolve Tech Solutions  - White_MatteG.png"
+    alt="Garsolve Logo"
+    class="logo"
+  />
 
+  <h1>
+    Building Something
+    <span class="highlight">Powerful.</span>
+  </h1>
 
-        <div
-            class="background-orb background-orb--one"
-        ></div>
 
 
-        <div
-            class="background-orb background-orb--two"
-        ></div>
-
-    </div>
-
-
-
-    <!-- =====================================================
-         HEADER
-    ====================================================== -->
-
-    <header
-        class="site-header"
-        id="siteHeader"
-    >
-
-        <div class="container">
-
-            <nav
-                class="navigation"
-                aria-label="Primary navigation"
-            >
-
-
-                <!-- BRAND -->
-
-                <a
-                    href="#top"
-                    class="brand"
-                    aria-label="Garsolve home"
-                >
-
-                    <img
-                        src="assets/logo/garsolve-light.svg"
-                        alt="Garsolve Technology Solutions"
-                        class="brand__logo brand__logo--desktop"
-                    >
-
-                    <img
-                        src="assets/logo/garsolve-mark.svg"
-                        alt=""
-                        aria-hidden="true"
-                        class="brand__logo brand__logo--mobile"
-                    >
-
-                </a>
-
-
-
-                <!-- NAVIGATION -->
-
-                <div
-                    class="navigation__links"
-                    id="primaryNavigation"
-                >
-
-                    <a
-                        href="#services"
-                        class="navigation__link"
-                    >
-                        Services
-                    </a>
-
-                    <a
-                        href="#solutions"
-                        class="navigation__link"
-                    >
-                        Solutions
-                    </a>
-
-                    <a
-                        href="#case-study"
-                        class="navigation__link"
-                    >
-                        Case Study
-                    </a>
-
-                    <a
-                        href="#process"
-                        class="navigation__link"
-                    >
-                        Process
-                    </a>
-
-                    <a
-                        href="#about"
-                        class="navigation__link"
-                    >
-                        About
-                    </a>
-
-                    <a
-                        href="#contact"
-                        class="navigation__link"
-                    >
-                        Contact
-                    </a>
-
-                </div>
-
-
-
-                <!-- DESKTOP CTA -->
-
-                <a
-                    href="#contact"
-                    class="button button--primary navigation__cta"
-                >
-
-                    Let's Talk
-
-                    <span
-                        class="button__arrow"
-                        aria-hidden="true"
-                    >
-                        →
-                    </span>
-
-                </a>
-
-
-
-                <!-- MOBILE MENU -->
-
-                <button
-                    type="button"
-                    class="navigation__toggle"
-                    id="navigationToggle"
-                    aria-label="Open navigation menu"
-                    aria-expanded="false"
-                    aria-controls="primaryNavigation"
-                >
-
-                    <span></span>
-                    <span></span>
-                    <span></span>
-
-                </button>
-
-            </nav>
-
-        </div>
-
-    </header>
-
-
-
-    <!-- =====================================================
-         MAIN
-    ====================================================== -->
-
-    <main id="top">
-
-
-        <!-- =================================================
-             HERO
-        ================================================== -->
-
-        <section
-            class="hero section"
-            id="hero"
-        >
-
-            <div class="container">
-
-                <div class="hero__grid">
-
-
-                    <!-- HERO CONTENT -->
-
-                    <div class="hero__content">
-
-                        <div class="hero__eyebrow">
-
-                            <span
-                                class="status status--primary"
-                            >
-
-                                <span
-                                    class="status__dot"
-                                ></span>
-
-                                Technology Solutions
-
-                            </span>
-
-                        </div>
-
-
-                        <h1 class="hero__title">
-
-                            Technology that
-
-                            <span class="text-gradient">
-                                works for your business.
-                            </span>
-
-                        </h1>
-
-
-                        <p class="hero__description">
-
-                            Garsolve helps businesses replace
-                            disconnected spreadsheets, manual
-                            processes, and fragmented systems
-                            with modern technology solutions
-                            designed around the way they actually
-                            work.
-
-                        </p>
-
-
-                        <div class="hero__actions">
-
-                            <a
-                                href="#contact"
-                                class="button button--primary button--large"
-                            >
-
-                                Start a Conversation
-
-                                <span
-                                    class="button__arrow"
-                                    aria-hidden="true"
-                                >
-                                    →
-                                </span>
-
-                            </a>
-
-
-                            <a
-                                href="#services"
-                                class="button button--ghost button--large"
-                            >
-
-                                Explore Services
-
-                            </a>
-
-                        </div>
-
-
-                        <div class="hero__trust">
-
-                            <span>
-                                Power Platform
-                            </span>
-
-                            <span aria-hidden="true">
-                                •
-                            </span>
-
-                            <span>
-                                Dataverse
-                            </span>
-
-                            <span aria-hidden="true">
-                                •
-                            </span>
-
-                            <span>
-                                Automation
-                            </span>
-
-                        </div>
-
-                    </div>
-
-
-
-                    <!-- HERO DASHBOARD -->
-
-                    <div
-                        class="hero__visual"
-                        data-reveal="right"
-                    >
-
-                        <div class="dashboard-card">
-
-
-                            <!-- DASHBOARD HEADER -->
-
-                            <div
-                                class="dashboard-card__header"
-                            >
-
-                                <div
-                                    class="dashboard-card__identity"
-                                >
-
-                                    <img
-                                        src="assets/logo/garsolve-mark.svg"
-                                        alt=""
-                                        aria-hidden="true"
-                                        class="dashboard-card__logo"
-                                    >
-
-                                    <div>
-
-                                        <span
-                                            class="dashboard-card__eyebrow"
-                                        >
-                                            GARSOLVE PLATFORM
-                                        </span>
-
-                                        <h2>
-                                            Operations Hub
-                                        </h2>
-
-                                        <small class="dashboard-card__note">
-                                            Illustrative business platform
-                                        </small>
-
-                                    </div>
-
-                                </div>
-
-
-                                <div
-                                    class="dashboard-status"
-                                >
-
-                                    <span
-                                        class="status status--success"
-                                    >
-
-                                        <span
-                                            class="status__dot"
-                                        ></span>
-
-                                        Connected
-
-                                    </span>
-
-                                </div>
-
-                            </div>
-
-
-
-                            <!-- DASHBOARD OVERVIEW -->
-
-                            <div
-                                class="dashboard-overview"
-                            >
-
-                                <div
-                                    class="dashboard-overview__header"
-                                >
-
-                                    <span>
-                                        Operations Overview
-                                    </span>
-
-                                    <span
-                                        class="dashboard-overview__period"
-                                    >
-                                        Example
-                                    </span>
-
-                                </div>
-
-
-                                <div
-                                    class="dashboard-overview__grid"
-                                >
-
-                                    <div
-                                        class="dashboard-stat"
-                                    >
-
-                                        <div
-                                            class="dashboard-stat__icon"
-                                        >
-                                            ◇
-                                        </div>
-
-                                        <div
-                                            class="dashboard-stat__content"
-                                        >
-
-                                            <span>
-                                                Projects
-                                            </span>
-
-                                            <strong>
-                                                Active
-                                            </strong>
-
-                                        </div>
-
-                                    </div>
-
-
-                                    <div
-                                        class="dashboard-stat"
-                                    >
-
-                                        <div
-                                            class="dashboard-stat__icon"
-                                        >
-                                            ⚡
-                                        </div>
-
-                                        <div
-                                            class="dashboard-stat__content"
-                                        >
-
-                                            <span>
-                                                Workflows
-                                            </span>
-
-                                            <strong>
-                                                Automated
-                                            </strong>
-
-                                        </div>
-
-                                    </div>
-
-
-                                    <div
-                                        class="dashboard-stat"
-                                    >
-
-                                        <div
-                                            class="dashboard-stat__icon"
-                                        >
-                                            ◫
-                                        </div>
-
-                                        <div
-                                            class="dashboard-stat__content"
-                                        >
-
-                                            <span>
-                                                Data
-                                            </span>
-
-                                            <strong>
-                                                Connected
-                                            </strong>
-
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-
-
-                            <!-- BUSINESS SYSTEMS -->
-
-                            <div
-                                class="dashboard-systems"
-                            >
-
-                                <div
-                                    class="dashboard-section-heading"
-                                >
-
-                                    <span>
-                                        Business Systems
-                                    </span>
-
-                                    <span>
-                                        Status
-                                    </span>
-
-                                </div>
-
-
-                                <div
-                                    class="dashboard-system-row"
-                                >
-
-                                    <div
-                                        class="dashboard-system"
-                                    >
-
-                                        <span
-                                            class="dashboard-system__icon"
-                                        >
-                                            P
-                                        </span>
-
-                                        <div>
-
-                                            <strong>
-                                                Power Platform
-                                            </strong>
-
-                                            <small>
-                                                Business applications
-                                            </small>
-
-                                        </div>
-
-                                    </div>
-
-                                    <span
-                                        class="system-status system-status--active"
-                                    >
-                                        Active
-                                    </span>
-
-                                </div>
-
-
-                                <div
-                                    class="dashboard-system-row"
-                                >
-
-                                    <div
-                                        class="dashboard-system"
-                                    >
-
-                                        <span
-                                            class="dashboard-system__icon"
-                                        >
-                                            D
-                                        </span>
-
-                                        <div>
-
-                                            <strong>
-                                                Dataverse
-                                            </strong>
-
-                                            <small>
-                                                Business data
-                                            </small>
-
-                                        </div>
-
-                                    </div>
-
-                                    <span
-                                        class="system-status system-status--active"
-                                    >
-                                        Connected
-                                    </span>
-
-                                </div>
-
-
-                                <div
-                                    class="dashboard-system-row"
-                                >
-
-                                    <div
-                                        class="dashboard-system"
-                                    >
-
-                                        <span
-                                            class="dashboard-system__icon"
-                                        >
-                                            A
-                                        </span>
-
-                                        <div>
-
-                                            <strong>
-                                                Automation
-                                            </strong>
-
-                                            <small>
-                                                Business workflows
-                                            </small>
-
-                                        </div>
-
-                                    </div>
-
-                                    <span
-                                        class="system-status system-status--active"
-                                    >
-                                        Running
-                                    </span>
-
-                                </div>
-
-                            </div>
-
-
-
-                            <!-- WORKFLOW -->
-
-                            <div
-                                class="dashboard-workflow"
-                            >
-
-                                <div
-                                    class="dashboard-section-heading"
-                                >
-
-                                    <span>
-                                        Workflow Activity
-                                    </span>
-
-                                    <span>
-                                        Example
-                                    </span>
-
-                                </div>
-
-
-                                <div
-                                    class="workflow-item"
-                                >
-
-                                    <div
-                                        class="workflow-item__marker"
-                                    ></div>
-
-                                    <div
-                                        class="workflow-item__content"
-                                    >
-
-                                        <strong>
-                                            Project workflow
-                                        </strong>
-
-                                        <span>
-                                            Automated process
-                                        </span>
-
-                                    </div>
-
-                                    <span
-                                        class="workflow-item__status"
-                                    >
-                                        Complete
-                                    </span>
-
-                                </div>
-
-
-                                <div
-                                    class="workflow-item"
-                                >
-
-                                    <div
-                                        class="workflow-item__marker"
-                                    ></div>
-
-                                    <div
-                                        class="workflow-item__content"
-                                    >
-
-                                        <strong>
-                                            Data synchronization
-                                        </strong>
-
-                                        <span>
-                                            Integration process
-                                        </span>
-
-                                    </div>
-
-                                    <span
-                                        class="workflow-item__status"
-                                    >
-                                        Running
-                                    </span>
-
-                                </div>
-
-
-                                <div
-                                    class="workflow-item"
-                                >
-
-                                    <div
-                                        class="workflow-item__marker"
-                                    ></div>
-
-                                    <div
-                                        class="workflow-item__content"
-                                    >
-
-                                        <strong>
-                                            Approval workflow
-                                        </strong>
-
-                                        <span>
-                                            Business process
-                                        </span>
-
-                                    </div>
-
-                                    <span
-                                        class="workflow-item__status"
-                                    >
-                                        Ready
-                                    </span>
-
-                                </div>
-
-                            </div>
-
-
-                            <div
-                                class="dashboard-card__glow"
-                                aria-hidden="true"
-                            ></div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-
-        <!-- =================================================
-             TECHNOLOGY SPECIALIZATION
-        ================================================== -->
-
-        <section
-            class="technology-section"
-            id="technology"
-        >
-
-            <div class="container">
-
-                <div
-                    class="technology-section__content"
-                    data-reveal="scale"
-                >
-
-                    <div
-                        class="technology-section__logo"
-                    >
-
-                        <img
-                            src="assets/icons/power-platform.svg"
-                            alt="Microsoft Power Platform"
-                            loading="lazy"
-                        >
-
-                    </div>
-
-
-                    <div
-                        class="technology-section__copy"
-                    >
-
-                        <span
-                            class="section-heading__eyebrow"
-                        >
-                            TECHNOLOGY SPECIALIZATION
-                        </span>
-
-
-                        <h2>
-
-                            We work with
-
-                            <span class="text-gradient">
-                                Microsoft Power Platform.
-                            </span>
-
-                        </h2>
-
-
-                        <p>
-
-                            We use Microsoft Power Platform to build
-                            custom business applications, automate
-                            processes, centralize business data, and
-                            connect the systems organizations already
-                            rely on.
-
-                        </p>
-
-
-                        <div
-                            class="technology-section__stack"
-                            aria-label="Related technologies"
-                        >
-
-                            <span>
-                                Power Apps
-                            </span>
-
-                            <span>
-                                Power Automate
-                            </span>
-
-                            <span>
-                                Dataverse
-                            </span>
-
-                            <span>
-                                SharePoint
-                            </span>
-
-                            <span>
-                                Azure
-                            </span>
-
-                            <span>
-                                APIs & Integrations
-                            </span>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-
-        <!-- =================================================
-             PROBLEMS WE SOLVE
-        ================================================== -->
-
-        <section
-            class="section challenges"
-            id="solutions"
-        >
-
-            <div class="container">
-
-
-                <div
-                    class="section-heading"
-                    data-reveal
-                >
-
-                    <span
-                        class="section-heading__eyebrow"
-                    >
-                        THE PROBLEM
-                    </span>
-
-
-                    <h2>
-
-                        Your business shouldn't
-                        have to fight its technology.
-
-                    </h2>
-
-
-                    <p>
-
-                        When information lives across spreadsheets,
-                        email, disconnected applications, and manual
-                        processes, even simple work becomes difficult.
-
-                    </p>
-
-                </div>
-
-
-                <div
-                    class="challenge-grid reveal-stagger"
-                >
-
-                    <article
-                        class="challenge-card"
-                    >
-
-                        <div class="icon-box">
-                            ✦
-                        </div>
-
-                        <h3>
-                            Too Much Manual Work
-                        </h3>
-
-                        <p>
-                            Repetitive tasks consume time that
-                            should be spent running and growing
-                            the business.
-                        </p>
-
-                    </article>
-
-
-                    <article
-                        class="challenge-card"
-                    >
-
-                        <div class="icon-box">
-                            ◇
-                        </div>
-
-                        <h3>
-                            Disconnected Systems
-                        </h3>
-
-                        <p>
-                            Critical information becomes difficult
-                            to find when systems don't communicate
-                            with each other.
-                        </p>
-
-                    </article>
-
-
-                    <article
-                        class="challenge-card"
-                    >
-
-                        <div class="icon-box">
-                            ◎
-                        </div>
-
-                        <h3>
-                            Spreadsheet Dependency
-                        </h3>
-
-                        <p>
-                            Spreadsheets can be useful, but they
-                            become fragile when they're carrying
-                            the weight of an entire operation.
-                        </p>
-
-                    </article>
-
-
-                    <article
-                        class="challenge-card"
-                    >
-
-                        <div class="icon-box">
-                            ↗
-                        </div>
-
-                        <h3>
-                            Limited Visibility
-                        </h3>
-
-                        <p>
-                            Leaders need accurate information
-                            quickly enough to make confident
-                            decisions.
-                        </p>
-
-                    </article>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-
-        <!-- =================================================
-             SERVICES
-        ================================================== -->
-
-        <section
-            class="section services"
-            id="services"
-        >
-
-            <div class="container">
-
-
-                <div
-                    class="section-heading"
-                    data-reveal
-                >
-
-                    <span
-                        class="section-heading__eyebrow"
-                    >
-                        SERVICES
-                    </span>
-
-
-                    <h2>
-
-                        Technology solutions
-                        built around your business.
-
-                    </h2>
-
-
-                    <p>
-
-                        Garsolve combines application development,
-                        automation, data, and systems integration
-                        to create solutions that fit your operation.
-
-                    </p>
-
-                </div>
-
-
-
-                <div
-                    class="services-grid reveal-stagger"
-                >
-
-
-                    <!-- SERVICE 1 -->
-
-                    <article
-                        class="service-card"
-                        data-service="power-platform"
-                    >
-
-                        <div
-                            class="service-card__top"
-                        >
-
-                            <div
-                                class="service-card__icon"
-                            >
-
-                                <svg
-                                    viewBox="0 0 48 48"
-                                    aria-hidden="true"
-                                >
-
-                                    <rect
-                                        x="8"
-                                        y="8"
-                                        width="14"
-                                        height="14"
-                                        rx="3"
-                                    ></rect>
-
-                                    <rect
-                                        x="26"
-                                        y="8"
-                                        width="14"
-                                        height="14"
-                                        rx="3"
-                                    ></rect>
-
-                                    <rect
-                                        x="8"
-                                        y="26"
-                                        width="14"
-                                        height="14"
-                                        rx="3"
-                                    ></rect>
-
-                                    <path
-                                        d="M26 33h14"
-                                    ></path>
-
-                                    <path
-                                        d="M33 26v14"
-                                    ></path>
-
-                                </svg>
-
-                            </div>
-
-
-                            <span
-                                class="service-card__number"
-                            >
-                                01
-                            </span>
-
-                        </div>
-
-
-                        <div
-                            class="service-card__body"
-                        >
-
-                            <span
-                                class="service-card__eyebrow"
-                            >
-                                MICROSOFT POWER PLATFORM
-                            </span>
-
-
-                            <h3>
-                                Power Platform Development
-                            </h3>
-
-
-                            <p>
-                                Build custom business applications
-                                that replace inefficient processes
-                                and give teams a better way to work.
-                            </p>
-
-                        </div>
-
-
-                        <div
-                            class="service-card__technologies"
-                        >
-
-                            <span class="tech-pill">
-                                Power Apps
-                            </span>
-
-                            <span class="tech-pill">
-                                Dataverse
-                            </span>
-
-                            <span class="tech-pill">
-                                Power Automate
-                            </span>
-
-                        </div>
-
-                    </article>
-
-
-
-                    <!-- SERVICE 2 -->
-
-                    <article
-                        class="service-card"
-                        data-service="automation"
-                    >
-
-                        <div
-                            class="service-card__top"
-                        >
-
-                            <div
-                                class="service-card__icon"
-                            >
-
-                                <svg
-                                    viewBox="0 0 48 48"
-                                    aria-hidden="true"
-                                >
-
-                                    <path
-                                        d="M24 6v8"
-                                    ></path>
-
-                                    <path
-                                        d="M24 34v8"
-                                    ></path>
-
-                                    <path
-                                        d="M6 24h8"
-                                    ></path>
-
-                                    <path
-                                        d="M34 24h8"
-                                    ></path>
-
-                                    <path
-                                        d="m11 11 6 6"
-                                    ></path>
-
-                                    <path
-                                        d="m31 31 6 6"
-                                    ></path>
-
-                                    <path
-                                        d="m37 11-6 6"
-                                    ></path>
-
-                                    <path
-                                        d="m17 31-6 6"
-                                    ></path>
-
-                                    <circle
-                                        cx="24"
-                                        cy="24"
-                                        r="7"
-                                    ></circle>
-
-                                </svg>
-
-                            </div>
-
-
-                            <span
-                                class="service-card__number"
-                            >
-                                02
-                            </span>
-
-                        </div>
-
-
-                        <div
-                            class="service-card__body"
-                        >
-
-                            <span
-                                class="service-card__eyebrow"
-                            >
-                                PROCESS AUTOMATION
-                            </span>
-
-
-                            <h3>
-                                Business Automation
-                            </h3>
-
-
-                            <p>
-                                Automate repetitive work,
-                                approvals, notifications,
-                                document flows, and
-                                operational processes.
-                            </p>
-
-                        </div>
-
-
-                        <div
-                            class="service-card__technologies"
-                        >
-
-                            <span class="tech-pill">
-                                Power Automate
-                            </span>
-
-                            <span class="tech-pill">
-                                Workflows
-                            </span>
-
-                            <span class="tech-pill">
-                                Approvals
-                            </span>
-
-                        </div>
-
-                    </article>
-
-
-
-                    <!-- SERVICE 3 -->
-
-                    <article
-                        class="service-card"
-                        data-service="integration"
-                    >
-
-                        <div
-                            class="service-card__top"
-                        >
-
-                            <div
-                                class="service-card__icon"
-                            >
-
-                                <svg
-                                    viewBox="0 0 48 48"
-                                    aria-hidden="true"
-                                >
-
-                                    <rect
-                                        x="6"
-                                        y="17"
-                                        width="12"
-                                        height="14"
-                                        rx="3"
-                                    ></rect>
-
-                                    <rect
-                                        x="30"
-                                        y="17"
-                                        width="12"
-                                        height="14"
-                                        rx="3"
-                                    ></rect>
-
-                                    <path
-                                        d="M18 24h12"
-                                    ></path>
-
-                                    <path
-                                        d="m25 18 6 6-6 6"
-                                    ></path>
-
-                                </svg>
-
-                            </div>
-
-
-                            <span
-                                class="service-card__number"
-                            >
-                                03
-                            </span>
-
-                        </div>
-
-
-                        <div
-                            class="service-card__body"
-                        >
-
-                            <span
-                                class="service-card__eyebrow"
-                            >
-                                SYSTEMS INTEGRATION
-                            </span>
-
-
-                            <h3>
-                                Data & Systems Integration
-                            </h3>
-
-
-                            <p>
-                                Connect applications, APIs,
-                                and data sources so information
-                                can move reliably across
-                                the business.
-                            </p>
-
-                        </div>
-
-
-                        <div
-                            class="service-card__technologies"
-                        >
-
-                            <span class="tech-pill">
-                                APIs
-                            </span>
-
-                            <span class="tech-pill">
-                                Dataflows
-                            </span>
-
-                            <span class="tech-pill">
-                                Integrations
-                            </span>
-
-                        </div>
-
-                    </article>
-
-
-
-                    <!-- SERVICE 4 -->
-
-                    <article
-                        class="service-card"
-                        data-service="applications"
-                    >
-
-                        <div
-                            class="service-card__top"
-                        >
-
-                            <div
-                                class="service-card__icon"
-                            >
-
-                                <svg
-                                    viewBox="0 0 48 48"
-                                    aria-hidden="true"
-                                >
-
-                                    <rect
-                                        x="7"
-                                        y="7"
-                                        width="34"
-                                        height="34"
-                                        rx="6"
-                                    ></rect>
-
-                                    <path
-                                        d="M7 17h34"
-                                    ></path>
-
-                                    <circle
-                                        cx="13"
-                                        cy="12"
-                                        r="1.5"
-                                    ></circle>
-
-                                    <circle
-                                        cx="19"
-                                        cy="12"
-                                        r="1.5"
-                                    ></circle>
-
-                                    <circle
-                                        cx="25"
-                                        cy="12"
-                                        r="1.5"
-                                    ></circle>
-
-                                    <path
-                                        d="M15 25h18"
-                                    ></path>
-
-                                    <path
-                                        d="M15 31h12"
-                                    ></path>
-
-                                </svg>
-
-                            </div>
-
-
-                            <span
-                                class="service-card__number"
-                            >
-                                04
-                            </span>
-
-                        </div>
-
-
-                        <div
-                            class="service-card__body"
-                        >
-
-                            <span
-                                class="service-card__eyebrow"
-                            >
-                                BUSINESS APPLICATIONS
-                            </span>
-
-
-                            <h3>
-                                Custom Business Applications
-                            </h3>
-
-
-                            <p>
-                                Create purpose-built applications
-                                around your processes, users,
-                                business rules, and operational data.
-                            </p>
-
-                        </div>
-
-
-                        <div
-                            class="service-card__technologies"
-                        >
-
-                            <span class="tech-pill">
-                                Canvas Apps
-                            </span>
-
-                            <span class="tech-pill">
-                                Model-driven Apps
-                            </span>
-
-                            <span class="tech-pill">
-                                Dataverse
-                            </span>
-
-                        </div>
-
-                    </article>
-
-
-
-                    <!-- SERVICE 5 -->
-
-                    <article
-                        class="service-card"
-                        data-service="data"
-                    >
-
-                        <div
-                            class="service-card__top"
-                        >
-
-                            <div
-                                class="service-card__icon"
-                            >
-
-                                <svg
-                                    viewBox="0 0 48 48"
-                                    aria-hidden="true"
-                                >
-
-                                    <path
-                                        d="M10 38V25"
-                                    ></path>
-
-                                    <path
-                                        d="M19 38V17"
-                                    ></path>
-
-                                    <path
-                                        d="M28 38V21"
-                                    ></path>
-
-                                    <path
-                                        d="M37 38V10"
-                                    ></path>
-
-                                    <path
-                                        d="M7 38h34"
-                                    ></path>
-
-                                </svg>
-
-                            </div>
-
-
-                            <span
-                                class="service-card__number"
-                            >
-                                05
-                            </span>
-
-                        </div>
-
-
-                        <div
-                            class="service-card__body"
-                        >
-
-                            <span
-                                class="service-card__eyebrow"
-                            >
-                                DATA & REPORTING
-                            </span>
-
-
-                            <h3>
-                                Data & Reporting
-                            </h3>
-
-
-                            <p>
-                                Turn operational information
-                                into useful visibility with
-                                structured data, reporting,
-                                and business intelligence
-                                solutions.
-                            </p>
-
-                        </div>
-
-
-                        <div
-                            class="service-card__technologies"
-                        >
-
-                            <span class="tech-pill">
-                                Dataverse
-                            </span>
-
-                            <span class="tech-pill">
-                                Reporting
-                            </span>
-
-                            <span class="tech-pill">
-                                Data Architecture
-                            </span>
-
-                        </div>
-
-                    </article>
-
-
-
-                    <!-- SERVICE 6 -->
-
-                    <article
-                        class="service-card"
-                        data-service="consulting"
-                    >
-
-                        <div
-                            class="service-card__top"
-                        >
-
-                            <div
-                                class="service-card__icon"
-                            >
-
-                                <svg
-                                    viewBox="0 0 48 48"
-                                    aria-hidden="true"
-                                >
-
-                                    <circle
-                                        cx="24"
-                                        cy="24"
-                                        r="15"
-                                    ></circle>
-
-                                    <circle
-                                        cx="24"
-                                        cy="24"
-                                        r="6"
-                                    ></circle>
-
-                                    <path
-                                        d="M24 9v-4"
-                                    ></path>
-
-                                    <path
-                                        d="M24 43v-4"
-                                    ></path>
-
-                                    <path
-                                        d="M9 24H5"
-                                    ></path>
-
-                                    <path
-                                        d="M43 24h-4"
-                                    ></path>
-
-                                </svg>
-
-                            </div>
-
-
-                            <span
-                                class="service-card__number"
-                            >
-                                06
-                            </span>
-
-                        </div>
-
-
-                        <div
-                            class="service-card__body"
-                        >
-
-                            <span
-                                class="service-card__eyebrow"
-                            >
-                                TECHNOLOGY STRATEGY
-                            </span>
-
-
-                            <h3>
-                                Technology Consulting
-                            </h3>
-
-
-                            <p>
-                                Evaluate existing technology,
-                                define architecture, identify
-                                opportunities, and create a
-                                practical modernization roadmap.
-                            </p>
-
-                        </div>
-
-
-                        <div
-                            class="service-card__technologies"
-                        >
-
-                            <span class="tech-pill">
-                                Architecture
-                            </span>
-
-                            <span class="tech-pill">
-                                Strategy
-                            </span>
-
-                            <span class="tech-pill">
-                                Roadmaps
-                            </span>
-
-                        </div>
-
-                    </article>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-
-        <!-- =================================================
-             WHY GARSOLVE
-        ================================================== -->
-
-        <section
-            class="section why-garsolve"
-            id="why-garsolve"
-        >
-
-            <div class="container">
-
-                <div
-                    class="why-garsolve__grid"
-                >
-
-
-                    <div
-                        class="section-heading"
-                        data-reveal="left"
-                    >
-
-                        <span
-                            class="section-heading__eyebrow"
-                        >
-                            WHY GARSOLVE
-                        </span>
-
-
-                        <h2>
-                            Technology should simplify
-                            the business, not complicate it.
-                        </h2>
-
-
-                        <p>
-                            Garsolve approaches technology from
-                            the perspective of the business process
-                            first, then designs the technology
-                            around it.
-                        </p>
-
-                    </div>
-
-
-                    <div
-                        class="principles-grid reveal-stagger"
-                    >
-
-                        <article class="principle-card">
-
-                            <span
-                                class="principle-card__number"
-                            >
-                                01
-                            </span>
-
-                            <h3>
-                                Understand
-                            </h3>
-
-                            <p>
-                                Understand the people, process,
-                                data, and business problem before
-                                choosing the technology.
-                            </p>
-
-                        </article>
-
-
-                        <article class="principle-card">
-
-                            <span
-                                class="principle-card__number"
-                            >
-                                02
-                            </span>
-
-                            <h3>
-                                Architect
-                            </h3>
-
-                            <p>
-                                Build a scalable foundation that
-                                can support the business beyond
-                                the initial implementation.
-                            </p>
-
-                        </article>
-
-
-                        <article class="principle-card">
-
-                            <span
-                                class="principle-card__number"
-                            >
-                                03
-                            </span>
-
-                            <h3>
-                                Automate
-                            </h3>
-
-                            <p>
-                                Remove repetitive work and let
-                                systems handle predictable
-                                operational processes.
-                            </p>
-
-                        </article>
-
-
-                        <article class="principle-card">
-
-                            <span
-                                class="principle-card__number"
-                            >
-                                04
-                            </span>
-
-                            <h3>
-                                Improve
-                            </h3>
-
-                            <p>
-                                Treat technology as an evolving
-                                platform rather than a one-time
-                                implementation.
-                            </p>
-
-                        </article>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-
-        <!-- =================================================
-             CASE STUDY
-        ================================================== -->
-
-        <section
-            class="section case-study"
-            id="case-study"
-        >
-
-            <div class="container">
-
-
-                <div
-                    class="section-heading"
-                    data-reveal
-                >
-
-                    <span
-                        class="section-heading__eyebrow"
-                    >
-                        CASE STUDY
-                    </span>
-
-
-                    <h2>
-                        From spreadsheets to
-                        an enterprise business platform.
-                    </h2>
-
-
-                    <p>
-                        A real-world project management solution
-                        designed to bring operational data,
-                        workflows, and business processes into
-                        a centralized Power Platform environment.
-                    </p>
-
-                </div>
-
-
-
-                <!-- CASE STUDY FEATURE -->
-
-                <div
-                    class="case-study-feature"
-                    data-reveal="scale"
-                >
-
-
-                    <!-- CASE STUDY CONTENT -->
-
-                    <div
-                        class="case-study-feature__content"
-                    >
-
-                        <span
-                            class="badge badge--primary"
-                        >
-                            Enterprise Project Management
-                        </span>
-
-
-                        <h3>
-                            Modernizing project operations
-                            with Microsoft Power Platform
-                        </h3>
-
-
-                        <p>
-                            The solution replaced spreadsheet-driven
-                            project management processes with a
-                            centralized business application built
-                            around structured operational data.
-                        </p>
-
-
-                        <p>
-                            Projects, tasks, locations, and related
-                            business information were organized into
-                            a scalable Dataverse model, while
-                            automated workflows and data integrations
-                            connected the surrounding systems.
-                        </p>
-
-
-                        <div
-                            class="case-study-feature__technologies"
-                        >
-
-                            <span class="tech-pill">
-                                Power Apps
-                            </span>
-
-                            <span class="tech-pill">
-                                Dataverse
-                            </span>
-
-                            <span class="tech-pill">
-                                Power Automate
-                            </span>
-
-                            <span class="tech-pill">
-                                Dataflows
-                            </span>
-
-                            <span class="tech-pill">
-                                Sage 300
-                            </span>
-
-                        </div>
-
-                    </div>
-
-
-
-                    <!-- ARCHITECTURE -->
-
-                    <div
-                        class="case-study-architecture"
-                        data-reveal="right"
-                    >
-
-                        <div
-                            class="architecture-header"
-                        >
-
-                            <span>
-                                SOLUTION ARCHITECTURE
-                            </span>
-
-                            <span>
-                                GARSOLVE
-                            </span>
-
-                        </div>
-
-
-                        <div
-                            class="architecture-flow"
-                        >
-
-
-                            <!-- POWER APPS -->
-
-                            <div
-                                class="architecture-node architecture-node--primary"
-                            >
-
-                                <div
-                                    class="architecture-node__icon"
-                                >
-                                    PA
-                                </div>
-
-                                <div>
-
-                                    <strong>
-                                        Power Apps
-                                    </strong>
-
-                                    <small>
-                                        User experience
-                                    </small>
-
-                                </div>
-
-                            </div>
-
-
-                            <div
-                                class="architecture-connector"
-                            >
-                                ↓
-                            </div>
-
-
-                            <!-- DATAVERSE -->
-
-                            <div
-                                class="architecture-node architecture-node--center"
-                            >
-
-                                <div
-                                    class="architecture-node__icon"
-                                >
-                                    D
-                                </div>
-
-                                <div>
-
-                                    <strong>
-                                        Dataverse
-                                    </strong>
-
-                                    <small>
-                                        Business data layer
-                                    </small>
-
-                                </div>
-
-                            </div>
-
-
-                            <div
-                                class="architecture-branches"
-                            >
-
-                                <div
-                                    class="architecture-branch"
-                                >
-
-                                    <div
-                                        class="architecture-connector"
-                                    >
-                                        ↓
-                                    </div>
-
-                                    <div
-                                        class="architecture-node"
-                                    >
-
-                                        <div
-                                            class="architecture-node__icon"
-                                        >
-                                            A
-                                        </div>
-
-                                        <div>
-
-                                            <strong>
-                                                Power Automate
-                                            </strong>
-
-                                            <small>
-                                                Workflow automation
-                                            </small>
-
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-
-                                <div
-                                    class="architecture-branch"
-                                >
-
-                                    <div
-                                        class="architecture-connector"
-                                    >
-                                        ↓
-                                    </div>
-
-                                    <div
-                                        class="architecture-node"
-                                    >
-
-                                        <div
-                                            class="architecture-node__icon"
-                                        >
-                                            DF
-                                        </div>
-
-                                        <div>
-
-                                            <strong>
-                                                Dataflows
-                                            </strong>
-
-                                            <small>
-                                                Data ingestion
-                                            </small>
-
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-
-                            <div
-                                class="architecture-connector"
-                            >
-                                ↓
-                            </div>
-
-
-                            <!-- SAGE -->
-
-                            <div
-                                class="architecture-node"
-                            >
-
-                                <div
-                                    class="architecture-node__icon"
-                                >
-                                    S3
-                                </div>
-
-                                <div>
-
-                                    <strong>
-                                        Sage 300
-                                    </strong>
-
-                                    <small>
-                                        External business system
-                                    </small>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-
-                <!-- CASE STUDY IMPACT -->
-
-                <div
-                    class="case-study-impact"
-                    data-reveal
-                >
-
-                    <span
-                        class="case-study-impact__value"
-                    >
-                        ≈40%
-                    </span>
-
-
-                    <div>
-
-                        <strong>
-                            Faster Processing
-                        </strong>
-
-                        <p>
-                            Standardized processes and workflow
-                            automation reduced manual data-entry
-                            effort and improved overall processing
-                            time by approximately 40%.
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-
-                <!-- CASE STUDY OUTCOMES -->
-
-                <div
-                    class="case-study-outcomes reveal-stagger"
-                >
-
-                    <div
-                        class="case-study-outcome"
-                    >
-
-                        <span
-                            class="case-study-outcome__number"
-                        >
-                            01
-                        </span>
-
-                        <h3>
-                            Centralized Data
-                        </h3>
-
-                        <p>
-                            Business information is organized
-                            into a structured platform rather
-                            than scattered across spreadsheets.
-                        </p>
-
-                    </div>
-
-
-                    <div
-                        class="case-study-outcome"
-                    >
-
-                        <span
-                            class="case-study-outcome__number"
-                        >
-                            02
-                        </span>
-
-                        <h3>
-                            Standardized Processes
-                        </h3>
-
-                        <p>
-                            Consistent workflows create a more
-                            repeatable way for teams to perform
-                            operational work.
-                        </p>
-
-                    </div>
-
-
-                    <div
-                        class="case-study-outcome"
-                    >
-
-                        <span
-                            class="case-study-outcome__number"
-                        >
-                            03
-                        </span>
-
-                        <h3>
-                            Connected Workflows
-                        </h3>
-
-                        <p>
-                            Automated processes reduce manual
-                            handoffs and keep operational work
-                            moving.
-                        </p>
-
-                    </div>
-
-
-                    <div
-                        class="case-study-outcome"
-                    >
-
-                        <span
-                            class="case-study-outcome__number"
-                        >
-                            04
-                        </span>
-
-                        <h3>
-                            Integrated Systems
-                        </h3>
-
-                        <p>
-                            External business information can
-                            participate in the same operational
-                            ecosystem.
-                        </p>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-
-        <!-- =================================================
-             PROCESS
-        ================================================== -->
-
-        <section
-            class="section process"
-            id="process"
-        >
-
-            <div class="container">
-
-
-                <div
-                    class="section-heading"
-                    data-reveal
-                >
-
-                    <span
-                        class="section-heading__eyebrow"
-                    >
-                        OUR PROCESS
-                    </span>
-
-
-                    <h2>
-                        From problem to
-                        working solution.
-                    </h2>
-
-
-                    <p>
-                        A straightforward approach that keeps
-                        technology aligned with the outcome
-                        your business actually needs.
-                    </p>
-
-                </div>
-
-
-                <div
-                    class="process-timeline reveal-stagger"
-                >
-
-                    <article
-                        class="process-step"
-                    >
-
-                        <div
-                            class="process-step__number"
-                        >
-                            01
-                        </div>
-
-                        <h3>
-                            Discover
-                        </h3>
-
-                        <p>
-                            Understand the current process,
-                            pain points, systems, users,
-                            and desired outcome.
-                        </p>
-
-                    </article>
-
-
-                    <article
-                        class="process-step"
-                    >
-
-                        <div
-                            class="process-step__number"
-                        >
-                            02
-                        </div>
-
-                        <h3>
-                            Design
-                        </h3>
-
-                        <p>
-                            Define the architecture, data model,
-                            application experience, integrations,
-                            and automation strategy.
-                        </p>
-
-                    </article>
-
-
-                    <article
-                        class="process-step"
-                    >
-
-                        <div
-                            class="process-step__number"
-                        >
-                            03
-                        </div>
-
-                        <h3>
-                            Build
-                        </h3>
-
-                        <p>
-                            Develop the solution iteratively,
-                            validate it with users, and refine
-                            the experience.
-                        </p>
-
-                    </article>
-
-
-                    <article
-                        class="process-step"
-                    >
-
-                        <div
-                            class="process-step__number"
-                        >
-                            04
-                        </div>
-
-                        <h3>
-                            Evolve
-                        </h3>
-
-                        <p>
-                            Continue improving the platform as
-                            the business grows and its needs
-                            change.
-                        </p>
-
-                    </article>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-
-        <!-- =================================================
-     ABOUT GARSOLVE
-================================================== -->
-
-<section
-class="section founder"
-id="about"
->
-
-<div class="container">
-
-    <div class="founder__grid">
-
-
-        <!-- BRAND VISUAL -->
-
-        <div
-            class="founder__visual"
-            data-reveal="left"
-        >
-
-            <div class="founder-card">
-
-                <div
-                    class="founder-card__glow"
-                ></div>
-
-
-                <img
-                    src="assets/logo/garsolve-mark.svg"
-                    alt="Garsolve"
-                    class="founder-card__logo"
-                />
-
-
-                <span
-                    class="founder-card__label"
-                >
-                    TECHNOLOGY SOLUTIONS
-                </span>
-
-            </div>
-
-        </div>
-
-
-        <!-- ABOUT CONTENT -->
-
-        <div
-            class="founder__content"
-            data-reveal="right"
-        >
-
-            <span
-                class="section-heading__eyebrow"
-            >
-                ABOUT GARSOLVE
-            </span>
-
-
-            <h2>
-                Built around real-world
-                business problems.
-            </h2>
-
-
-            <p>
-                Garsolve helps businesses turn
-                inefficient processes, disconnected
-                systems, and manual work into
-                practical technology solutions.
-            </p>
-
-
-            <p>
-                The approach starts with understanding
-                how the business actually operates.
-                From there, the right combination of
-                applications, automation, data architecture,
-                and integrations can be designed around
-                the process.
-            </p>
-
-
-            <p>
-                The goal isn't to add more technology.
-                It's to build technology that makes the
-                business easier to operate, easier to
-                understand, and easier to grow.
-            </p>
-
-
-            <div
-                class="founder__principles"
-            >
-
-                <div>
-
-                    <span>
-                        01
-                    </span>
-
-                    <strong>
-                        Business First
-                    </strong>
-
-                </div>
-
-
-                <div>
-
-                    <span>
-                        02
-                    </span>
-
-                    <strong>
-                        Practical Architecture
-                    </strong>
-
-                </div>
-
-
-                <div>
-
-                    <span>
-                        03
-                    </span>
-
-                    <strong>
-                        Continuous Improvement
-                    </strong>
-
-                </div>
-
-            </div>
-
-
-            <a
-                href="#contact"
-                class="arrow-link"
-            >
-
-                Start a conversation
-
-                <span aria-hidden="true">
-                    →
-                </span>
-
-            </a>
-
-        </div>
-
-    </div>
+  <p>
+    We’re working behind the scenes to launch a premium experience that empowers businesses through scalable technology solutions.
+  </p>
 
 </div>
 
-</section>
-        </section>
-
-
-
-        <!-- =================================================
-             CONTACT
-        ================================================== -->
-
-        <section
-            class="section contact"
-            id="contact"
-        >
-
-            <div class="container">
-
-
-                <div
-                    class="contact-card"
-                    data-reveal="scale"
-                >
-
-                    <div
-                        class="contact-card__content"
-                    >
-
-                        <span
-                            class="badge badge--primary"
-                        >
-                            Let's Connect
-                        </span>
-
-
-                        <h2>
-                            Have a process
-                            that needs fixing?
-                        </h2>
-
-
-                        <p>
-                            Tell us what you're trying to accomplish.
-                            We'll start with the problem and work
-                            toward the right technology solution.
-                        </p>
-
-                    </div>
-
-
-                    <div
-                        class="contact-card__actions"
-                    >
-
-                        <a
-                            href="mailto:GilbertGarcia@garsolve.com"
-                            class="button button--light button--large"
-                        >
-
-                            Email Garsolve
-
-                            <span
-                                class="button__arrow"
-                                aria-hidden="true"
-                            >
-                                →
-                            </span>
-
-                        </a>
-
-                    </div>
-
-
-                    <a
-                        href="mailto:GilbertGarcia@garsolve.com"
-                        class="contact-card__email"
-                    >
-                        GilbertGarcia@garsolve.com
-                    </a>
-
-
-                    <div
-                        class="contact-card__glow"
-                        aria-hidden="true"
-                    ></div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-    </main>
-
-
-
-    <!-- =====================================================
-         FOOTER
-    ====================================================== -->
-
-    <footer
-        class="site-footer"
-    >
-
-        <div class="container">
-
-
-            <div
-                class="footer-grid"
-            >
-
-
-                <!-- BRAND -->
-
-                <div
-                    class="footer-brand"
-                >
-
-                    <a
-                        href="#top"
-                        class="brand"
-                        aria-label="Garsolve home"
-                    >
-
-                        <img
-                            src="assets/logo/garsolve-light.svg"
-                            alt="Garsolve Technology Solutions"
-                            class="brand__logo brand__logo--desktop"
-                        >
-
-                        <img
-                            src="assets/logo/garsolve-mark.svg"
-                            alt=""
-                            aria-hidden="true"
-                            class="brand__logo brand__logo--mobile"
-                        >
-
-                    </a>
-
-
-                    <p>
-                        Practical technology solutions
-                        for modern businesses.
-                    </p>
-
-                </div>
-
-
-
-                <!-- EXPLORE -->
-
-                <div
-                    class="footer-column"
-                >
-
-                    <h3>
-                        Explore
-                    </h3>
-
-                    <a href="#solutions">
-                        Solutions
-                    </a>
-
-                    <a href="#services">
-                        Services
-                    </a>
-
-                    <a href="#case-study">
-                        Case Study
-                    </a>
-
-                    <a href="#process">
-                        Process
-                    </a>
-
-                </div>
-
-
-
-                <!-- COMPANY -->
-
-                <div
-                    class="footer-column"
-                >
-
-                    <h3>
-                        Company
-                    </h3>
-
-                    <a href="#about">
-                        About
-                    </a>
-
-                    <a href="#contact">
-                        Contact
-                    </a>
-
-                </div>
-
-
-
-                <!-- CONTACT -->
-
-                <div
-                    class="footer-column"
-                >
-
-                    <h3>
-                        Contact
-                    </h3>
-
-                    <a
-                        href="mailto:GilbertGarcia@garsolve.com"
-                    >
-                        GilbertGarcia@garsolve.com
-                    </a>
-
-                    <a
-                        href="tel:+14808861568"
-                    >
-                        480-886-1568
-                    </a>
-
-                    <span>
-                        Arizona & Remote
-                    </span>
-
-                </div>
-
-            </div>
-
-
-
-            <!-- FOOTER BOTTOM -->
-
-            <div
-                class="footer-bottom"
-            >
-
-
-
-                <div
-                    class="footer-bottom__links"
-                >
-
-                <div class="footer-bottom">
-
-                    <span>
-                        ©
-                        <span data-current-year>
-                            2026
-                        </span>
-                        Garsolve LLC. All rights reserved.
-                    </span>
-                
-                </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </footer>
-
-
-
-    <!-- =====================================================
-         JAVASCRIPT
-    ====================================================== -->
-
-    <script
-        src="js/navigation.js"
-        defer
-    ></script>
-
-    <script
-        src="js/background.js"
-        defer
-    ></script>
-
-    <script
-        src="js/observer.js"
-        defer
-    ></script>
-
-    <script
-        src="js/app.js"
-        defer
-    ></script>
-
+<div class="contact-card">
+
+  <img
+    src="assets/otter-mascot.png"
+    class="otter"
+    alt="Otter Mascot"
+  />
+
+  <div class="contact-content">
+
+    <div class="contact-title">
+      Contact Garsolve
+    </div>
+
+    <div class="contact-item">
+      <div class="icon">👤</div>
+
+      <div>
+        <h3>Founder & CEO</h3>
+        <p>Gilbert Garcia</p>
+      </div>
+    </div>
+
+    <div class="contact-item">
+      <div class="icon">📞</div>
+
+      <div>
+        <h3>Phone</h3>
+        <a href="tel:14808861568">
+          (480) 886-1568
+        </a>
+      </div>
+    </div>
+
+    <div class="contact-item">
+      <div class="icon">✉️</div>
+
+      <div>
+        <h3>Email</h3>
+        <a href="mailto:GilbertGarcia@garsolve.com">
+          GilbertGarcia@garsolve.com
+        </a>
+      </div>
+    </div>
+
+    <div class="contact-item">
+      <div class="icon">🌐</div>
+
+      <div>
+        <h3>Website</h3>
+        <a href="https://www.garsolve.com">
+          www.garsolve.com
+        </a>
+      </div>
+    </div>
+
+    <div class="footer-note">
+      © 2026 Garsolve LLC. All rights reserved.
+    </div>
+
+  </div>
+
+</div>
+```
+
+  </div>
 
 </body>
-
 </html>
